@@ -2,38 +2,39 @@
 
 ``` mermaid
 flowchart TD
-    subgraph "Project Documentation"
-        Readme["Project Overview and Objectives (README.md)"]:::doc
+    %% Main Pipeline
+    DS["Raw Data Input (CSV)"]:::dataSource
+    NB["Analysis Notebook"]:::notebook
+    DOC["Documentation & Overview"]:::dataSource
+
+    DS -->|"ingested by"| NB
+
+    subgraph "Pipeline Steps"
+        DI["Data Ingestion & Loading"]:::processing
+        DC["Data Cleaning & Preprocessing"]:::processing
+        EDA["Exploratory Data Analysis"]:::processing
+        DV["Data Visualization"]:::output
+        ML["Machine Learning/Data Mining"]:::processing
     end
 
-    CSVData["CSV Data Source (suicide_rates_1990-2022.csv)"]:::data
-    Notebook["Jupyter Notebook (Suicide_Analysis_DataMining.ipynb)"]:::notebook
+    NB --> DI
+    DI -->|"processes"| DC
+    DC -->|"transitions"| EDA
+    EDA -->|"feeds"| DV
+    DV -->|"triggers"| ML
 
-    subgraph "Data Analysis Pipeline"
-        DataLoading["Data Loading (pandas)"]:::process
-        Preprocessing["Preprocessing"]:::process
-        EDA["Exploratory Data Analysis (pandas,Matplotlib,Seaborn)"]:::process
-        ML_DM["Machine Learning/Data Mining (scikit-learn)"]:::process
-        Visualization["Visualization & Insights"]:::process
-    end
+    NB -->|"references"| DOC
 
-    Readme -->|"informs"| Notebook
-    CSVData -->|"ingests"| Notebook
-    Notebook -->|"executes"| DataLoading
-    DataLoading -->|"cleans"| Preprocessing
-    Preprocessing -->|"explores"| EDA
-    EDA -->|"models"| ML_DM
-    ML_DM -->|"visualizes"| Visualization
+    %% Click Events
+    click DS "https://github.com/binduyerra/suicide_analysis_data_mining/blob/main/suicide_rates_1990-2022.csv"
+    click NB "https://github.com/binduyerra/suicide_analysis_data_mining/blob/main/Suicide_Analysis_DataMining.ipynb"
+    click DOC "https://github.com/binduyerra/suicide_analysis_data_mining/blob/main/README.md"
 
-    click Readme "https://github.com/binduyerra/suicide_analysis_data_mining/blob/main/README.md"
-    click CSVData "https://github.com/binduyerra/suicide_analysis_data_mining/blob/main/suicide_rates_1990-2022.csv"
-    click Notebook "https://github.com/binduyerra/suicide_analysis_data_mining/blob/main/Suicide_Analysis_DataMining.ipynb"
-
-    classDef data fill:#ffcccc,stroke:#cc0000,stroke-width:2px;
-    classDef notebook fill:#ccffcc,stroke:#006600,stroke-width:2px;
-    classDef process fill:#ccccff,stroke:#0000cc,stroke-width:2px;
-    classDef doc fill:#fff0b3,stroke:#ffaa00,stroke-width:2px;
- ```
+    %% Styles
+    classDef dataSource fill:#ADD8E6,stroke:#0000FF,color:#000000,font-family:Arial,font-size:14px;
+    classDef notebook fill:#D3D3D3,stroke:#808080,color:#000000,font-family:Arial,font-size:14px;
+    classDef processing fill:#F4A460,stroke:#FF8C00,color:#000000,font-family:Arial,font-size:14px;
+    classDef output fill:#90EE90,stroke:#008000,color:#000000,font-family:Arial,font-size:14px; ```
 
 
 
